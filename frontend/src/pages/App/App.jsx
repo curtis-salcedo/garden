@@ -3,14 +3,15 @@ import axios from 'axios';
 import { Routes, Route } from 'react-router-dom';
 
 // Component Imports
-import NavBar from '../../Components/NavBar/NavBar';
-import Footer from '../../Components/Footer/Footer';
+import NavBar from '../../components/NavBar/NavBar';
+import Footer from '../../components/Footer/Footer';
 
 // Page Imports
 import LandingPage from '../LandingPage/LandingPage';
 import HomePage from '../HomePage/HomePage';
 import ProfilePage from '../ProfilePage/ProfilePage';
 import GardenPage from '../GardenPage/GardenPage';
+import Dashboard from '../Dashboard/Dashboard';
 
 // Style Imports
 import './App.css';
@@ -27,6 +28,7 @@ function App() {
         <Route path="/home" element={<HomePage />} />
         <Route path="/profile" element={<ProfilePage />} />
         <Route path="/garden" element={<GardenPage />} />
+        <Route path="/dashboard" element={<Dashboard />} />
       </Routes>
       <Footer />
     </div>

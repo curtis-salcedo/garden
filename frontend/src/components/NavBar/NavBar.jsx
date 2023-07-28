@@ -52,6 +52,7 @@ export default function NavBar() {
                 Search
               </InputGroupText>
             </InputGroup>
+            
           </Nav>
           <NavbarText>Simple Text</NavbarText>
         </Collapse>
