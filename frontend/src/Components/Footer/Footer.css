@@ -1,0 +1,19 @@
+.footer-container {
+  display: flex;
+  flex-direction: column;
+  width: 100vw;
+}
+
+.footer-upper {
+  background-color: rgb(88, 88, 88);
+  color: white;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-around;
+  align-items: center;
+}
+
+.footer-lower {
+  background-color: rgb(37, 37, 37);
+  color: white;
+}

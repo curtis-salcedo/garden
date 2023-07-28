@@ -1,0 +1,29 @@
+.profile-page-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  width: 95vw;
+}
+
+.profile-container {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+  background-color: yellow;
+  width: 100%;
+}
+
+.profile-image {
+  background-color: bisque;
+}
+
+.profile-image > image {
+  width: 220px;
+  height: 220px;
+}
+
+.profile-preferences {
+  background-color: rgb(135, 165, 28);
+}
