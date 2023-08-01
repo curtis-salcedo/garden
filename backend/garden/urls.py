@@ -16,9 +16,27 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path, include
-from rest_framework import routers, serializers, viewsets
+from rest_framework import routers
+from main_app import views
+
+# Router registration
+router = routers.DefaultRouter()
+router.register('users', views.CustomUserView)
+router.register('plants', views.PlantView)
+router.register('gardens', views.GardenView)
 
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('accounts/', include('allauth.urls')),
+    path('api/', include(router.urls)),
+
+    # User URLs
+    path('api/user/get', views.get_user, name='get_user'),
+
+    # Plant URLs
+    # Garden URLs
+    # Profile URLs
+    # Address URLs
+    # UserPlant URLs
+
 ]

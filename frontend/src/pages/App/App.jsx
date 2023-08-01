@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import { Routes, Route } from 'react-router-dom';
 
@@ -13,12 +13,26 @@ import ProfilePage from '../ProfilePage/ProfilePage';
 import GardenPage from '../GardenPage/GardenPage';
 import Dashboard from '../Dashboard/Dashboard';
 
+// Utility Imports
+import { getUser } from '../../utilities/getUser';
+
 // Style Imports
 import './App.css';
 
 import { Button } from 'reactstrap';
 
+axios.defaults.xsrfHeaderName = "X-CSRFToken";
+axios.defaults.xsrfCookieName = "csrftoken";
+
 function App() {
+  const [user, setUser] = useState(null);
+
+  useEffect(() => {
+    
+  }, []);
+
+  console.log(user)
+
   return (
     <div className="App">
       <NavBar />

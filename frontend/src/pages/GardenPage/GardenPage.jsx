@@ -1,11 +1,20 @@
 import React, { useState } from 'react';
 
+// Component Imports
+import AddGarden from '../../components/Garden/AddGarden/AddGarden';
+
 // Style Imports
 import './GardenPage.css';
 // import * as Unicons from '@iconscout/react-unicons';
 import { Button } from 'reactstrap';
 
 export default function GardenPage() {
+  const [showAddGarden, setShowAddGarden] = useState(false);
+
+  // Show the AddGarden component function
+  const showAddGardenComponent = () => {
+    setShowAddGarden(!showAddGarden);
+  }
 
   return (
     <div className='garden-page-container'>
@@ -14,8 +23,9 @@ export default function GardenPage() {
         <div>Garden Summary</div>
       </div>
       <Button
-        onClick={() => console.log('New Garden')}
+        onClick={() => showAddGardenComponent()}
       >New Garden</Button>
+      { showAddGarden ? <AddGarden /> : null}
     </div>
   );
 }

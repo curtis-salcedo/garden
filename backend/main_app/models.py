@@ -10,7 +10,7 @@ from .managers import CustomUserManager
 
 # CustomUser Model for authentication
 class CustomUser(AbstractBaseUser, PermissionsMixin):
-    username = models.CharField(max_length=255, unique=True)
+    username = models.CharField(max_length=255, unique=True, null=True)
     email = models.EmailField(unique=True)
     first_name = models.CharField(max_length=255, null=True)
     last_name = models.CharField(max_length=255, null=True)
@@ -21,14 +21,15 @@ class CustomUser(AbstractBaseUser, PermissionsMixin):
 
     objects = CustomUserManager()
 
-    USERNAME_FIELD = 'email'
+    USERNAME_FIELD = 'username'
     EMAIL_FIELD = 'email'
     REQUIRED_FIELDS = []
 
     def __str__(self):
-        return self.email
+        return self.username + '-' + self.email
     
 class Profile(models.Model):
+    id = models.AutoField(primary_key=True)
     user = models.OneToOneField(CustomUser, on_delete=models.CASCADE)
     bio = models.TextField(max_length=500, blank=True)
     address = models.CharField(max_length=30, blank=True)
@@ -40,6 +41,7 @@ class Profile(models.Model):
         return self.user.email
 
 class Address(models.Model):
+    id = models.AutoField(primary_key=True)
     profile = models.ForeignKey(Profile, on_delete=models.CASCADE, null=True, blank=True, related_name='addresses')
     street = models.CharField(max_length=100, blank=True, null=True)
     city = models.CharField(max_length=100, blank=True)
@@ -68,6 +70,7 @@ class Plant(models.Model):
         ('partial', 'Partial'),
         ('shade', 'Shade'),
     ]
+    id = models.AutoField(primary_key=True)
     name = models.CharField(max_length=100)
     description = models.TextField(max_length=500, blank=True)
     color = models.CharField(max_length=100, blank=True)
@@ -99,6 +102,7 @@ class Plant(models.Model):
         return self.name + ' - ' + self.description
     
 class UserPlant(models.Model):
+    id = models.AutoField(primary_key=True)
     user = models.ForeignKey(Profile, on_delete=models.CASCADE, null=True, blank=True)
     plant = models.ForeignKey(Plant, on_delete=models.CASCADE, null=True, blank=True)
     garden = models.ForeignKey('Garden', on_delete=models.CASCADE, null=True, blank=True)
@@ -109,6 +113,9 @@ class UserPlant(models.Model):
     date_transplanted = models.DateField(blank=True, null=True)
     date_harvested = models.DateField(blank=True, null=True)
 
+    def __str__(self):
+        return self.name + ' - ' + self.garden.name + ' - ' + self.user.profile.user.email
+
 class Garden(models.Model):
     FACE_CHOICES = [
         ('north', 'North'),
@@ -116,6 +123,7 @@ class Garden(models.Model):
         ('east', 'East'),
         ('west', 'West'),
     ]
+    id = models.AutoField(primary_key=True)
     profile = models.ForeignKey(Profile, on_delete=models.CASCADE, null=True, blank=True)
     name = models.CharField(max_length=100)
     description = models.TextField(max_length=500, blank=True)
