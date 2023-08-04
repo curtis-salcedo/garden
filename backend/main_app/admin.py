@@ -7,8 +7,8 @@ class CustomUserAdmin(UserAdmin):
     add_form = CustomUserCreationForm
     form = CustomUserChangeForm
     model = CustomUser
-    list_display = ("username", "email", "is_staff", "is_active")
-    list_filter = ("username", "email", "is_staff", "is_active")
+    list_display = ("username", "email", "first_name", "last_name", "is_staff", "is_active")
+    list_filter = ("username", "email", "first_name", "last_name", "is_staff", "is_active")
     fieldsets = (
         (None, {"fields": ("username", "email", "password")}),
         ("Permissions", {"fields": ("is_staff", "is_active", "groups", "user_permissions")}),
@@ -17,7 +17,7 @@ class CustomUserAdmin(UserAdmin):
         (None, {
             "classes": ("wide",),
             "fields": (
-                "username", "email", "password1", "password2", "is_staff", "is_manager",
+                "username", "email", "first_name", "last_name", "password1", "password2", "is_staff", "is_manager",
                 "is_active", "groups", "user_permissions"
             )}
         ),
@@ -25,4 +25,9 @@ class CustomUserAdmin(UserAdmin):
     search_fields = ("email",)
     ordering = ("email",)
 
+class GardenAdmin(admin.ModelAdmin):
+    list = ("id", "profile", "name", "description", "size_x", "size_y")
+
 admin.site.register(CustomUser, CustomUserAdmin)
+admin.site.register(Garden, GardenAdmin)
+

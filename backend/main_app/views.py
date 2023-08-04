@@ -1,15 +1,16 @@
 import json
 
 # rest_framework imports
-from rest_framework import viewsets
+from rest_framework import viewsets, status
 from rest_framework.decorators import api_view, permission_classes
 from rest_framework.response import Response
 from rest_framework.permissions import IsAuthenticated
 
 # django imports
+from django.shortcuts import render, redirect
 from django.views.decorators.csrf import csrf_exempt
 from django.contrib.auth.decorators import login_required
-from django.http import JsonResponse
+from django.http import JsonResponse, HttpResponseRedirect
 
 # Model imports
 from .models import CustomUser, Profile, Garden, Plant, Address, UserPlant
@@ -18,28 +19,28 @@ from .models import CustomUser, Profile, Garden, Plant, Address, UserPlant
 from .serializers import CustomUserSerializer, ProfileSerializer, GardenSerializer, PlantSerializer, AddressSerializer, UserPlantSerializer, UserPlantDetailSerializer, UserPlantCreateSerializer
 
 class CustomUserView(viewsets.ModelViewSet):
-    queryset = CustomUser.objects.all()
     serializer_class = CustomUserSerializer
+    queryset = CustomUser.objects.all()
 
 class ProfileView(viewsets.ModelViewSet):
-    queryset = Profile.objects.all()
     serializer_class = ProfileSerializer
+    queryset = Profile.objects.all()
 
 class GardenView(viewsets.ModelViewSet):
     serializer_class = GardenSerializer
     queryset = Garden.objects.all()
 
 class PlantView(viewsets.ModelViewSet):
-    queryset = Plant.objects.all()
     serializer_class = PlantSerializer
+    queryset = Plant.objects.all()
 
 class AddressView(viewsets.ModelViewSet):
-    queryset = Address.objects.all()
     serializer_class = AddressSerializer
+    queryset = Address.objects.all()
 
 class UserPlantView(viewsets.ModelViewSet):
-    queryset = UserPlant.objects.all()
     serializer_class = UserPlantSerializer
+    queryset = UserPlant.objects.all()
 
     # def get_serializer_class(self):
     #     if self.action == 'list' or self.action == 'retrieve':
@@ -87,15 +88,49 @@ class UserPlantView(viewsets.ModelViewSet):
         # Path: backend/main_app/urls.py
         # Compare this snippet from backend/main_app/views.py:
         # from rest_framework import viewsets
+def home(request):
+    return render(request, 'home.html')
 
+def proxy_login(request):
+    print('Proxy Login request:', request)
+    redirect_url = 'http://localhost:8000/accounts/login/'
+    login_success = True
+    if login_success:
+        close_script = '''
+        <script>
+            window.opener.postMessage('login_success', '*');
+            window.close();
+        </script>
+        '''
+        return JsonResponse({'redirect_url': redirect_url, 'login_success': True, 'close_script': close_script}, status=status.HTTP_200_OK, safe=False)
+    else:
+        return JsonResponse({'redirect_url': redirect_url, 'login_success': False}, status=status.HTTP_200_OK, safe=False)
+    
+def proxy_signup(request):
+    print('Sign Up Proxy request:', request)
+    redirect_url = 'http://localhost:8000/accounts/login/'
+    return JsonResponse({'redirect_url': redirect_url}, status=status.HTTP_200_OK, safe=False)
+
+def proxy_logout(request):
+    print('Proxy Logout request:', request)
+    redirect_url = 'http://localhost:8000/accounts/logout/'
+    return JsonResponse({'redirect_url': redirect_url}, status=status.HTTP_200_OK, safe=False)
+
+def redirect_view(request):
+    print("Redirect request:", request)
+    redirect_url = 'http://localhost:3000/'
+    return HttpResponseRedirect(redirect_url)
+    
 @api_view(['GET'])
 def get_user(request):
     print("Check User Request data:", request)
+    print("user authenticated:", request.user)
     if request.user.is_authenticated:
         user_data = {
             'email': request.user.email,
-            'name': request.user.name,
-            'business': request.user.business.business_id,
+            'username': request.user.username,
+            'first_name': request.user.first_name,
+            'last_name': request.user.last_name,
         }
         print(user_data)
         return JsonResponse(user_data, status=status.HTTP_200_OK)

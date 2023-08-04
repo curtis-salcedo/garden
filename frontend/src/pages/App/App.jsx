@@ -12,9 +12,10 @@ import HomePage from '../HomePage/HomePage';
 import ProfilePage from '../ProfilePage/ProfilePage';
 import GardenPage from '../GardenPage/GardenPage';
 import Dashboard from '../Dashboard/Dashboard';
+import AuthPage from '../AuthPage/AuthPage';
 
 // Utility Imports
-import { getUser } from '../../utilities/getUser';
+import { getUser } from '../../utilities/users-api';
 
 // Style Imports
 import './App.css';
@@ -28,7 +29,12 @@ function App() {
   const [user, setUser] = useState(null);
 
   useEffect(() => {
-    
+    async function fetchUser() {
+      const userData = await getUser();
+      setUser(userData);
+      // console.log('userData', userData)
+    }
+    fetchUser();
   }, []);
 
   console.log(user)
@@ -36,6 +42,8 @@ function App() {
   return (
     <div className="App">
       <NavBar />
+      { user ?
+      <>
       <h1>Main App</h1>
       <Routes>
         <Route path="/" element={<LandingPage />} />
@@ -44,6 +52,8 @@ function App() {
         <Route path="/garden" element={<GardenPage />} />
         <Route path="/dashboard" element={<Dashboard />} />
       </Routes>
+      </>
+      : <AuthPage /> }
       <Footer />
     </div>
   );

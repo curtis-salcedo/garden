@@ -18,6 +18,10 @@ from django.contrib import admin
 from django.urls import path, include
 from rest_framework import routers
 from main_app import views
+from rest_framework_simplejwt.views import (
+    TokenObtainPairView,
+    TokenRefreshView,
+)
 
 # Router registration
 router = routers.DefaultRouter()
@@ -25,12 +29,22 @@ router.register('users', views.CustomUserView)
 router.register('plants', views.PlantView)
 router.register('gardens', views.GardenView)
 
+
 urlpatterns = [
+    path('', views.home, name='home'),
     path('admin/', admin.site.urls),
     path('accounts/', include('allauth.urls')),
     path('api/', include(router.urls)),
 
-    # User URLs
+    # JWT URLs
+    path('api/token/', TokenObtainPairView.as_view(), name='token_obtain_pair'),
+    path('api/token/refresh', TokenRefreshView.as_view(), name='token_refresh'),
+
+    # Authentication URLs
+    path('proxy/accounts/login/', views.proxy_login, name='proxy_login'),
+    path('proxy/accounts/logout/', views.proxy_logout, name='proxy_logout'),
+    path('proxy/accounts/signup/', views.proxy_signup, name='proxy_signup'),
+    path('redirect/', views.redirect_view, name='redirect'),
     path('api/user/get', views.get_user, name='get_user'),
 
     # Plant URLs

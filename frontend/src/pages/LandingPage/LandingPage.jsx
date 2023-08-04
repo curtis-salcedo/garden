@@ -47,7 +47,7 @@ export default function LandingPage() {
               <h3>Step 1</h3>
             </CardTitle>
             <CardText>
-              <p>Sign up for an account</p>
+              Sign up for an account
               <Unicons.UilUser size="100" color="#61DAFB" />
             </CardText>
           </Card>
@@ -57,7 +57,7 @@ export default function LandingPage() {
               <h3>Step 2</h3>
             </CardTitle>
             <CardText>
-              <p>Build your garden</p>
+              Build your garden
               <Unicons.UilFlower size="100" color="#61DAFB" />
             </CardText>
           </Card>
@@ -67,7 +67,7 @@ export default function LandingPage() {
               <h3>Step 3</h3>
             </CardTitle>
             <CardText>
-              <p>Yield Results</p>
+              Yield Results
               <Unicons.UilCheckCircle size="100" color="#61DAFB" />
             </CardText>
           </Card>

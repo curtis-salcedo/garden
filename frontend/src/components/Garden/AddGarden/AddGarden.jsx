@@ -14,7 +14,7 @@ export default function AddGarden() {
     console.log(newGarden);
     try {
       axios
-        .post('gardens/', newGarden)
+        .post('api/gardens/', newGarden)
         .then((res) => {
           console.log(res);
           console.log(res.data);
