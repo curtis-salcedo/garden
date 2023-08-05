@@ -20,7 +20,7 @@ class CustomUserSerializer(serializers.ModelSerializer):
 class ProfileSerializer(serializers.ModelSerializer):
     class Meta:
         model = Profile
-        fields = ('id', 'user', 'bio', 'address', 'user_plants')
+        fields = ('id', 'first_name', 'last_name', 'bio', 'user_plants')
 
 class GardenSerializer(serializers.ModelSerializer):
     class Meta:

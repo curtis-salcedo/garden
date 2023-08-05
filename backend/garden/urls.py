@@ -28,6 +28,9 @@ router = routers.DefaultRouter()
 router.register('users', views.CustomUserView)
 router.register('plants', views.PlantView)
 router.register('gardens', views.GardenView)
+router.register('profiles', views.ProfileView)
+router.register('addresses', views.AddressView)
+router.register('userplants', views.UserPlantView)
 
 
 urlpatterns = [

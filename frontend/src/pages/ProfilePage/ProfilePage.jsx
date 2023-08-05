@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 
 // Style Imports
 import './ProfilePage.css';
@@ -13,11 +13,110 @@ import {
   Col,
   Button,
 } from 'reactstrap';
+import axios from 'axios';
 
-export default function ProfilePage() {
+export default function ProfilePage({ user }) {
+  const [profile, setProfile] = useState({})
+
+  const [formData, setFormData] = useState({
+    first_name: '',
+    last_name: '',
+    bio: '',
+    address: '',
+    city: '',
+    state: '',
+    zip: '',
+  });
+
+  useEffect(() => {
+    fetchProfileData()
+  }, [])
+
+  const handleChange = (e) => {
+    setFormData({
+      ...formData,
+      [e.target.name]: e.target.value,
+    });
+  }
+
+  const fetchProfileData = () => {
+    try {
+      axios
+        .get(`http://localhost:8000/api/profiles/${user.id}/`, { withCredentials: true })
+        .then((res) => {
+          setProfile(res.data)
+        })
+    } catch (err) {
+      console.log('Error fetching profile data', err)
+    }
+  }
+
+  const handleSubmit = (e) => {
+    const addressData = {
+      address: formData.address,
+      city: formData.city,
+      state: formData.state,
+      zip: formData.zip,
+    }
+
+    const profileData = {
+      first_name: formData.first_name,
+      last_name: formData.last_name,
+      bio: formData.bio,
+    }
+
+    
+    e.preventDefault();
+    // First post will create the profile to get the profile ID which will be used to save the second post of the address
+    try {
+      axios
+      .put(`http://localhost:8000/api/profiles/${user.id}/`, profileData)
+      .then((res) => {
+          console.log('res, check res.data.id for being the right profile id', res)
+        })
+    } catch (err) {
+      console.log('Error submitting profile data', err)
+    }
+  }
+
   return (
     <div className='profile-page-container'>
       <h1>Profile Page</h1>
+
+      <FormGroup>
+          <Label>Username: {user.username}</Label>
+          <Label>Email: {user.email}</Label>
+        <InputGroup>
+          <Label for="first_name">First Name:</Label>
+          <Input onChange={handleChange} type="text" name="first_name" id="first_name" placeholder={`${profile.first_name ? profile.first_name : 'First Name'}`} />
+        </InputGroup>
+        <InputGroup>
+          <Label for="last_name">Last Name:</Label>
+          <Input onChange={handleChange} type="text" name="last_name" id="last_name" placeholder={`${profile.last_name ? profile.last_name : 'Last Name'}`} />
+        </InputGroup>
+        <InputGroup>
+          <Label for="bio">About:</Label>
+          <Input onChange={handleChange} type="textarea" name="bio" id="bio" placeholder={`${profile.bio ? profile.bio : "More about you and your garden"}`} />
+        </InputGroup>
+        <InputGroup>
+          <Label for="address">Address:</Label>
+          <Input onChange={handleChange} type="text" name="address" id="address" placeholder="address" />
+        </InputGroup>
+        <InputGroup>
+          <Label for="city">City:</Label>
+          <Input onChange={handleChange} type="text" name="city" id="city" placeholder="City" />
+        </InputGroup>
+        <InputGroup>
+          <Label for="state">State:</Label>
+          <Input onChange={handleChange} type="text" name="state" id="state" placeholder="State" />
+        </InputGroup>
+        <InputGroup>
+          <Label for="zip">Zip:</Label>
+          <Input onChange={handleChange} type="text" name="zip" id="zip" placeholder="Zip" />
+        </InputGroup>
+        <Button onClick={handleSubmit}>Save</Button>
+      </FormGroup>
+
 
       <div className='profile-container'>
 

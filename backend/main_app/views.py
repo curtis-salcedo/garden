@@ -88,11 +88,12 @@ class UserPlantView(viewsets.ModelViewSet):
         # Path: backend/main_app/urls.py
         # Compare this snippet from backend/main_app/views.py:
         # from rest_framework import viewsets
+
 def home(request):
     return render(request, 'home.html')
 
 def proxy_login(request):
-    print('Proxy Login request:', request)
+    # print('Proxy Login request:', request)
     redirect_url = 'http://localhost:8000/accounts/login/'
     login_success = True
     if login_success:
@@ -123,16 +124,14 @@ def redirect_view(request):
     
 @api_view(['GET'])
 def get_user(request):
-    print("Check User Request data:", request)
-    print("user authenticated:", request.user)
+    # print("Check User Request data:", request)
+    # print("User authenticated as:", request.user)
     if request.user.is_authenticated:
         user_data = {
+            'id': request.user.id,
             'email': request.user.email,
             'username': request.user.username,
-            'first_name': request.user.first_name,
-            'last_name': request.user.last_name,
         }
-        print(user_data)
         return JsonResponse(user_data, status=status.HTTP_200_OK)
     else:
         return Response({'detail': 'User is not authenticated.'})

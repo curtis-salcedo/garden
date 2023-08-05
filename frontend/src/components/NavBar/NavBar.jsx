@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { Link } from 'react-router-dom';
 
 // Style Imports
 import './NavBar.css';
@@ -18,10 +19,12 @@ import {
   InputGroup,
   InputGroupText,
   Input,
+  Alert,
 } from 'reactstrap';
 
-export default function NavBar() {
+export default function NavBar({ checkProfile }) {
   const [isOpen, setIsOpen] = useState(false);
+  const [profileAlert, setProfileAlert] = useState(checkProfile);
 
   const toggle = () => setIsOpen(!isOpen);
 
@@ -57,6 +60,7 @@ export default function NavBar() {
           <NavbarText>Simple Text</NavbarText>
         </Collapse>
       </Navbar>
+      <Alert color='danger'>Finish your Profile</Alert>
     </div>
   );
 }
